@@ -1,4 +1,19 @@
-﻿using System;
+﻿/**
+ * BinaryHeap.cs - a generic Binary Heap implementation in C#
+ * 
+ * T must implement IComparable
+ * 
+ * BinaryHeap<T> bh = new BinaryHeap<T>();  creates empty binary heap of Ts with natural order
+ * BinaryHeap<T> bh = new BinaryHeap<T>(compareFunc);  creates empty binary heap with a comparison function
+ * i.e. for reverse sorting, sorting by alternate criterion etc.
+ * 
+ * use bh.push(x) to add x to the binary heap
+ * use bh.pop() to retrieve the top element. Throws IndexOutOfRangeException if called on empty heap.
+ * use bh.peek() to retrieve but not remove the top element. Throws IndexOutOfRangeException if called on empty heap.
+ */
+
+
+using System;
 using System.Collections.Generic;
 
 
@@ -8,16 +23,23 @@ namespace DataStructures
 
     public class BinaryHeap<T> where T:IComparable
     {
-        Compare comp;
+        Compare comp;   // comparison function, pass delegate to constructor to use
         List<T> data = new List<T>();
 
         public int Size { get { return data.Count; } private set { } }
-        public bool IsEmpty() { return data.Count == 0;  }
+                
 
         public BinaryHeap() { comp = (x, y) => { return x.CompareTo(y); }; }
 
         public BinaryHeap(Compare compareTo) { comp = compareTo; }
 
+
+        public bool IsEmpty() { return data.Count == 0; }
+
+
+        /**
+         * add element to the heap, reordering to maintain consistency
+         */
         public void Push(T x)
         {
             data.Add(x);
@@ -32,14 +54,14 @@ namespace DataStructures
                     SwapAt(index, parent);
                     index = parent;
                 }
-                else
-                {
-                    break;
-                }
+                else break;
             }
         }
 
 
+        /**
+         * removes and returns the top element from the heap, reordering to maintain consistency
+         */
         public T Pop()
         {
             if (IsEmpty()) throw new System.IndexOutOfRangeException("Called Pop() on empty BinaryHeap");
@@ -53,28 +75,41 @@ namespace DataStructures
             while (index < Size)
             {
                 int childIndex = MinChildIndex(index);
-                
+
                 if (childIndex >= 0 && comp(data[childIndex], data[index]) < 0)
                 {
                     SwapAt(index, childIndex);
                     index = childIndex;
                 }
-                else
-                {
-                    break;
-                }
+                else break;
             }
 
             return ret;
         }
 
+        /**
+         * get top element without removing it
+         */
+        public T Peek()
+        {
+            if (IsEmpty()) throw new System.IndexOutOfRangeException("Called Peek() on empty BinaryHeap");
+            return data[0];
+        }
 
+
+        /**
+         * -------- INTERNAL HELPER FUNCTIONS ---------
+         */
+         
         int ParentIndex(int i)
         {
             return (i + 1) / 2 - 1;
         }
 
 
+        /**
+         * finds the array index of the minimum of the two children of element at index i
+         */
         int MinChildIndex(int i)
         {
             int childR = (i + 1) * 2;
@@ -85,7 +120,9 @@ namespace DataStructures
             else return childL;
         }
 
-
+        /**
+         * swaps elements at indices i and j in the array
+         */
         void SwapAt(int i, int j)
         {
             T temp = data[i];
