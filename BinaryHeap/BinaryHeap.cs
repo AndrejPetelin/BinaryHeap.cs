@@ -59,6 +59,12 @@ namespace DataStructures
         }
 
 
+        public void Push(T[] xs)
+        {
+            foreach (T x in xs) Push(x);
+        }
+
+
         /**
          * removes and returns the top element from the heap, reordering to maintain consistency
          */
@@ -86,6 +92,24 @@ namespace DataStructures
 
             return ret;
         }
+
+
+        public T[] Pop(int n)
+        {
+            T[] ret = new T[n];
+            for (int i = 0; i < n; ++i)
+            {
+                ret[i] = Pop();
+            }
+            return ret;
+        }
+
+
+        public T[] PopAll()
+        {
+            return Pop(Size);
+        }
+
 
         /**
          * get top element without removing it
