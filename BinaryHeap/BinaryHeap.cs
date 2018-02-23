@@ -122,6 +122,39 @@ namespace DataStructures
 
 
         /**
+         * gets n elements without removing them (puts the array back before returning)
+         */
+        public T[] Peek(int n)
+        {
+            T[] ret = new T[n];
+            for (int i = 0; i < n; ++i)
+            {
+                ret[i] = Pop();
+            }
+
+            Push(ret);
+            return ret;
+        }
+
+
+        /**
+         * returns the contents as array without popping (puts array back before returning).
+         */
+        public T[] PeekAll()
+        {
+            int n = Size;
+            T[] ret = new T[n];
+            for (int i = 0; i < n; ++i)
+            {
+                ret[i] = Pop();
+            }
+            Push(ret);
+
+            return ret;
+        }
+
+
+        /**
          * -------- INTERNAL HELPER FUNCTIONS ---------
          */
          
