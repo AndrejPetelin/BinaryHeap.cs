@@ -142,13 +142,14 @@ namespace DataStructures
          */
         public T[] PeekAll()
         {
+            List<T> original = new List<T>(data);
             int n = Size;
             T[] ret = new T[n];
             for (int i = 0; i < n; ++i)
             {
                 ret[i] = Pop();
             }
-            Push(ret);
+            data = original;
 
             return ret;
         }
