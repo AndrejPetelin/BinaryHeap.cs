@@ -138,7 +138,7 @@ namespace DataStructures
 
 
         /**
-         * returns the contents as array without popping (puts array back before returning).
+         * returns the contents as array without popping. Copies the list first, pops everything, then restores data to original
          */
         public T[] PeekAll()
         {
